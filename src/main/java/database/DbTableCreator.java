@@ -26,17 +26,17 @@ public class DbTableCreator {
                     + " ID                      SERIAL PRIMARY KEY     NOT NULL, "
                     + " NAME                    CHAR(100)              NOT NULL, "
                     + " PRICE                   INT                    NOT NULL,  "
-                    + " AUTHOR_ID               INT                    NOT NULL,   "
                     + " REVIEWS                 CHAR(500)              NOT NULL,"
-                    + " RATING                  INT                    NOT NULL"
+                    + " RATING                  INT                    NOT NULL,"
+                    + " AUTHOR_ID               INT                    NOT NULL"
                     + " ) ";
             stmt.executeUpdate(sql);
 
             sql = "CREATE TABLE IF NOT EXISTS JAVA_BOOKS.AUTHOR "
                     + " ( "
                     + " ID                      SERIAL PRIMARY KEY     NOT NULL, "
-                    + " FIRST_NAME                    CHAR(100)              NOT NULL, "
-                    + " LAST_NAME                     CHAR(100)              NOT NULL "
+                    + " FIRST_NAME                    CHAR(50)              NOT NULL, "
+                    + " LAST_NAME                     CHAR(50)              NOT NULL "
                     + " ) ";
             stmt.executeUpdate(sql);
 

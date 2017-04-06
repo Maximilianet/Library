@@ -8,24 +8,26 @@ import java.util.Set;
 @Entity
 @Table(name = "BOOK", schema = "java_books")
 public class Book {
+    private Long authorId;
     private long id;
     private String name;
     private int price;
-    private int authorId;
-    private String review;
+    private String reviews;
     private int rating;
+    private Author author = null;
 
     public Book(){
 
     }
 
-    public Book(long id, String name, int price, int authorId, String review, int rating) {
+    public Book(long id, String name, int price,  String reviews, int rating, Author author, long authorId) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.authorId = authorId;
-        this.review = review;
+        this.reviews = reviews;
         this.rating = rating;
+        this.author = author;
+        this.authorId = authorId;
     }
 
     @Id
@@ -57,22 +59,13 @@ public class Book {
         this.price = price;
     }
 
-    @Column(name = "AUTHOR_ID", nullable = false, unique = false)
-    public int getAuthorId() {
-        return authorId;
+    @Column(name = "REVIEWS", nullable = false, unique = false)
+    public String getReviews() {
+        return reviews;
     }
 
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-
-    @Column(name = "REVIEW", nullable = false, unique = false)
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
+    public void setReviews(String reviews) {
+        this.reviews = reviews;
     }
 
     @Column(name = "RATING", nullable = false, unique = false)
@@ -84,15 +77,34 @@ public class Book {
         this.rating = rating;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "AUTHOR_ID", nullable = false)
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    @Transient
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", id)
                 .append("name",name)
-                .append("author_id",authorId)
-                .append("reviews",review)
+                .append("reviews",reviews)
                 .append("rating",rating)
                 .append("price",price)
+                .append("authorId",authorId)
                 .toString();
     }
 }

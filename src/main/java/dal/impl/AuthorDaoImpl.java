@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AuthorDaoImpl implements AuthorDao{
 
-    //@Autowired
+    @Autowired
     private SessionFactory sessionFactory;
 
     public void setSessionFactory(SessionFactory sessionFactory) {

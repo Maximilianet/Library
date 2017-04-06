@@ -33,7 +33,6 @@
 			<list>
 				<value>dao.Book</value>
 				<value>dao.Author</value>
-				<value>dao.Reviews</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
