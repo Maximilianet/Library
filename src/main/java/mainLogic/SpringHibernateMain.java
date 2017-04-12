@@ -4,17 +4,9 @@ import dal.AuthorDao;
 import dal.BookDao;
 import dao.Author;
 import dao.Book;
-import javafx.scene.chart.PieChart;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import javax.sql.DataSource;
 
 public class SpringHibernateMain {
-
-	@Autowired
-	private static DataSource dataSourcee;
 
 	public static void main(String[] args) {
 
@@ -23,18 +15,18 @@ public class SpringHibernateMain {
 		AuthorDao authorDao = context.getBean(AuthorDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
 
-		String title = "Преступление и наказание";
-		deleteByTitle(title, bookDao);
 
+		createAuthorsAndBooks(authorDao, bookDao);
 		context.close();
 	}
 
 
-	public static void deleteByTitle(String title, BookDao bookDao) {
-		JdbcTemplate jdbc = new JdbcTemplate(dataSourcee);
-		String sql = "SELECT id FROM JAVA_BOOKS.book WHERE name="+title;
-		bookDao.deleteBook(sql);
-	}
+//	public static void deleteByTitle(String title) {
+//		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+//		String sql = "DELETE FROM java_books.book WHERE name ='" +title +"'";
+//		jdbc.execute(sql);
+//		System.out.println(title + "удалена успешно");
+//	}
 
 	private static void createAuthorsAndBooks(AuthorDao authorDao, BookDao bookDao) {
 		Author newAuthor1 = new Author();

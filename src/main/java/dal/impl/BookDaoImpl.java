@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -34,9 +36,10 @@ public class BookDaoImpl implements BookDao {
         session.close();
     }
 
-    public void deleteBook(String sqll){
+
+    public void deleteBook(String name){
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-//      String sql = "DELETE FROM java_books.book WHERE id ="+idBook;
-        jdbc.execute(sqll);
+        String sql = "SELECT id FROM java_books.book WHERE name ='"+ name + "'";
+        jdbc.execute(sql);
     }
 }

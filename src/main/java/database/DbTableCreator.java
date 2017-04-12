@@ -7,9 +7,9 @@ import java.sql.Statement;
 public class DbTableCreator {
 
     public static void main(String[] args) {
-        Connection c = null;
-        Statement stmt = null;
-        String sql = "";
+        Connection c;
+        Statement stmt;
+        String sql;
         try {
             Class.forName("org.postgresql.Driver");
             c = DriverManager
@@ -24,9 +24,9 @@ public class DbTableCreator {
             sql = "CREATE TABLE IF NOT EXISTS JAVA_BOOKS.BOOK "
                     + " ( "
                     + " ID                      SERIAL PRIMARY KEY     NOT NULL, "
-                    + " NAME                    CHAR(100)              NOT NULL, "
+                    + " NAME                    VARCHAR(100)             NOT NULL, "
                     + " PRICE                   INT                    NOT NULL,  "
-                    + " REVIEWS                 CHAR(500)              NOT NULL,"
+                    + " REVIEWS                 VARCHAR(500)              NOT NULL,"
                     + " RATING                  INT                    NOT NULL,"
                     + " AUTHOR_ID               INT                    NOT NULL"
                     + " ) ";
@@ -35,18 +35,11 @@ public class DbTableCreator {
             sql = "CREATE TABLE IF NOT EXISTS JAVA_BOOKS.AUTHOR "
                     + " ( "
                     + " ID                      SERIAL PRIMARY KEY     NOT NULL, "
-                    + " FIRST_NAME                    CHAR(50)              NOT NULL, "
-                    + " LAST_NAME                     CHAR(50)              NOT NULL "
+                    + " FIRST_NAME                    VARCHAR(50)              NOT NULL, "
+                    + " LAST_NAME                     VARCHAR(50)              NOT NULL "
                     + " ) ";
             stmt.executeUpdate(sql);
 
-//            sql = "CREATE TABLE IF NOT EXISTS JAVA_BOOKS.REVIEWS "
-//                    + " ( "
-//                    + " ID                      SERIAL PRIMARY KEY     NOT NULL, "
-//                    + " BOOK_ID                 INT             NOT NULL, "
-//                    + " REVIEW                  CHAR(1000)       NOT NULL"
-//                    + " ) ";
-//            stmt.executeUpdate(sql);
 
 //            sql = "ALTER TABLE JAVA_BOOKS.AUTHOR "
 //                    + " ADD CONSTRAINT FK_BOOK "
@@ -61,7 +54,6 @@ public class DbTableCreator {
             System.err.println(e.getClass().getName()+": "+ e.getMessage());
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
+        System.out.println("База создана");
     }
 }
-
