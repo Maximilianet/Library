@@ -1,6 +1,7 @@
 package dal.impl;
 
 import dal.BookDao;
+import dal.mapper.BookRowMapper;
 import dao.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -41,5 +43,21 @@ public class BookDaoImpl implements BookDao {
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
         String sql = "SELECT id FROM java_books.book WHERE name ='"+ name + "'";
         jdbc.execute(sql);
+    }
+
+    public List<Book> findFirstFifty(){
+        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+        String sql = ""
+                + "SELECT * FROM JAVA_BOOKS.BOOK"
+                + "ORDER BY BOOK.ID DESC"
+                + "FETCH FIRST 50 ROWS ONLY";
+
+        List<Book> books = jdbc.query(
+                sql,
+                new BookRowMapper(Book.class)
+        );
+
+        return books;
     }
 }

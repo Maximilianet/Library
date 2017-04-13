@@ -28,7 +28,8 @@ public class DbTableCreator {
                     + " PRICE                   INT                    NOT NULL,  "
                     + " REVIEWS                 VARCHAR(500)              NOT NULL,"
                     + " RATING                  INT                    NOT NULL,"
-                    + " AUTHOR_ID               INT                    NOT NULL"
+                    + " AUTHOR_ID               INT                    NOT NULL,"
+                    + " GENRE                   VARCHAR(50)              NOT NULL"
                     + " ) ";
             stmt.executeUpdate(sql);
 
@@ -39,12 +40,12 @@ public class DbTableCreator {
                     + " LAST_NAME                     VARCHAR(50)              NOT NULL "
                     + " ) ";
             stmt.executeUpdate(sql);
-
-            sql = "ALTER TABLE JAVA_BOOKS.BOOK "
-                    + " ADD CONSTRAINT FK_BOOK "
-                    + " FOREIGN KEY (AUTHOR_ID) REFERENCES JAVA_BOOKS.AUTHOR (ID) MATCH FULL "
-                    + " ";
-            stmt.executeUpdate(sql);
+//
+//            sql = "ALTER TABLE JAVA_BOOKS.BOOK "
+//                    + " ADD CONSTRAINT FK_BOOK "
+//                    + " FOREIGN KEY (AUTHOR_ID) REFERENCES JAVA_BOOKS.AUTHOR (ID) MATCH FULL "
+//                    + " ";
+//            stmt.executeUpdate(sql);
 
             stmt.close();
             c.close();

@@ -2,11 +2,22 @@ package mainLogic;
 
 import dal.AuthorDao;
 import dal.BookDao;
+import dal.impl.BookDaoImpl;
 import dao.Author;
 import dao.Book;
+import interfaceData.BookPageData;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
 public class SpringHibernateMain {
+	Connection c;
+	Statement stmt;
+	String sql;
 
 	public static void main(String[] args) {
 
@@ -16,7 +27,6 @@ public class SpringHibernateMain {
 		BookDao bookDao = context.getBean(BookDao.class);
 
 
-		createAuthorsAndBooks(authorDao, bookDao);
 		context.close();
 	}
 
@@ -27,6 +37,20 @@ public class SpringHibernateMain {
 //		jdbc.execute(sql);
 //		System.out.println(title + "удалена успешно");
 //	}
+
+	private static void openMainPage(AuthorDao authorDao, BookDao bookDao){
+		BookDaoImpl bookPageDataList = new BookDaoImpl();
+		List<Book> bookList = bookPageDataList.findFirstFifty();
+
+		List<BookPageData> bookPageData =
+		List<BookPageData> bookPageDataList =
+	}
+
+	private static ResultSet startMainWindow() throws SQLException { //Пункт 1
+		SpringHibernateMain ma = new SpringHibernateMain();
+		ResultSet resultSet = ma.stmt.executeQuery("SELECT name FROM java_books.book");
+		return resultSet;
+	}
 
 	private static void createAuthorsAndBooks(AuthorDao authorDao, BookDao bookDao) {
 		Author newAuthor1 = new Author();
