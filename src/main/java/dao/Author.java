@@ -1,5 +1,7 @@
 package dao;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -58,5 +60,15 @@ public class Author {
 
     public void setBooks(Set<Book>books) {
         this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("books", books)
+                .append("id",id)
+                .append("firstName",firstName)
+                .append("lastName",lastName)
+                .toString();
     }
 }

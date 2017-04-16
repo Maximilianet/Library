@@ -2,22 +2,18 @@ package mainLogic;
 
 import dal.AuthorDao;
 import dal.BookDao;
-import dal.impl.BookDaoImpl;
 import dao.Author;
 import dao.Book;
 import interfaceData.BookPageData;
+import interfaceData.TitlePageData;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpringHibernateMain {
-	Connection c;
-	Statement stmt;
-	String sql;
+
+	private static String sort = "ID";
+	private static int maxNumOfBooks = 5;
 
 	public static void main(String[] args) {
 
@@ -26,30 +22,60 @@ public class SpringHibernateMain {
 		AuthorDao authorDao = context.getBean(AuthorDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
 
+		List<TitlePageData> bookPageData = openMainPage(authorDao,bookDao);
+        System.out.println("\n\n" + "1. Open main page");
+        for (TitlePageData t : bookPageData){
+            System.out.println(t.getName() + ", " +t.getAuthorFullName() + ", " + t.getRating() + ", " + t.getPrice());
+        }
 
 		context.close();
 	}
 
+    private static List<TitlePageData> openMainPage(AuthorDao authorDao, BookDao bookDao) {
+        List<Book> bookList = bookDao.findFirstFifty();
 
-//	public static void deleteByTitle(String title) {
-//		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-//		String sql = "DELETE FROM java_books.book WHERE name ='" +title +"'";
-//		jdbc.execute(sql);
-//		System.out.println(title + "удалена успешно");
-//	}
+        List<TitlePageData> titlePageData = mapToTitlePageData(bookList, authorDao);
 
-	private static void openMainPage(AuthorDao authorDao, BookDao bookDao){
-		BookDaoImpl bookPageDataList = new BookDaoImpl();
-		List<Book> bookList = bookPageDataList.findFirstFifty();
+        return titlePageData;
+    }
 
-		List<BookPageData> bookPageData =
-		List<BookPageData> bookPageDataList =
+    private static List<TitlePageData> mapToTitlePageData(List<Book> bookList, AuthorDao authorDao) {
+        List<TitlePageData> dataList = new ArrayList<>();
+
+        for (Book book : bookList){
+			TitlePageData titlePageData= new TitlePageData();
+
+            Long authorId = book.getAuthorId();
+            Author author = authorDao.findById(authorId);
+            String authorFullName = author.getFirstName() + " " + author.getLastName();
+            titlePageData.setAuthorFullName(authorFullName);
+
+            titlePageData.setName(book.getName());
+
+            titlePageData.setPrice(book.getPrice());
+
+            titlePageData.setRating(book.getRating());
+
+            dataList.add(titlePageData);
+        }
+
+        return dataList;
+    }
+
+	public static String getSort() {
+		return sort;
 	}
 
-	private static ResultSet startMainWindow() throws SQLException { //Пункт 1
-		SpringHibernateMain ma = new SpringHibernateMain();
-		ResultSet resultSet = ma.stmt.executeQuery("SELECT name FROM java_books.book");
-		return resultSet;
+	public static void setSort(String sort) {
+		SpringHibernateMain.sort = sort;
+	}
+
+	public static int getMaxNumOfBooks() {
+		return maxNumOfBooks;
+	}
+
+	public static void setMaxNumOfBooks(int maxNumOfBooks) {
+		SpringHibernateMain.maxNumOfBooks = maxNumOfBooks;
 	}
 
 	private static void createAuthorsAndBooks(AuthorDao authorDao, BookDao bookDao) {
@@ -157,5 +183,4 @@ public class SpringHibernateMain {
 		newBook8.setAuthor(newAuthor8);
 		bookDao.save(newBook8);
 	}
-
 }

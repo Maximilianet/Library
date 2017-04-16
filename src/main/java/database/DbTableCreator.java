@@ -40,7 +40,7 @@ public class DbTableCreator {
                     + " LAST_NAME                     VARCHAR(50)              NOT NULL "
                     + " ) ";
             stmt.executeUpdate(sql);
-//
+
 //            sql = "ALTER TABLE JAVA_BOOKS.BOOK "
 //                    + " ADD CONSTRAINT FK_BOOK "
 //                    + " FOREIGN KEY (AUTHOR_ID) REFERENCES JAVA_BOOKS.AUTHOR (ID) MATCH FULL "

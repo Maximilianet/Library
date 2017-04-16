@@ -1,8 +1,11 @@
 package dal.impl;
 
 import dal.BookDao;
+import dal.mapper.AuthorRowMapper;
 import dal.mapper.BookRowMapper;
+import dao.Author;
 import dao.Book;
+import mainLogic.SpringHibernateMain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -11,8 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -38,20 +39,29 @@ public class BookDaoImpl implements BookDao {
         session.close();
     }
 
+    public Book findById(Long bookId){
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-    public void deleteBook(String name){
-        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-        String sql = "SELECT id FROM java_books.book WHERE name ='"+ name + "'";
-        jdbc.execute(sql);
+        String sql = ""
+                + " SELECT * FROM JAVA_BOOKS.BOOK"
+                + " WHERE ID = ?";
+
+        Book book = (Book) jdbcTemplate.queryForObject(
+                sql,
+                new Object[] {bookId},
+                new BookRowMapper(Book.class)
+        );
+
+        return book;
     }
 
     public List<Book> findFirstFifty(){
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
         String sql = ""
-                + "SELECT * FROM JAVA_BOOKS.BOOK"
-                + "ORDER BY BOOK.ID DESC"
-                + "FETCH FIRST 50 ROWS ONLY";
+                + " SELECT * FROM JAVA_BOOKS.BOOK "
+                + " ORDER BY BOOK."+SpringHibernateMain.getSort()+" DESC "
+                + " FETCH FIRST "+ SpringHibernateMain.getMaxNumOfBooks() +" ROWS ONLY ";
 
         List<Book> books = jdbc.query(
                 sql,

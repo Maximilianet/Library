@@ -5,4 +5,5 @@ import dao.Author;
 public interface AuthorDao {
     void save(Author entity);
 
+    Author findById(Long authorId);
 }

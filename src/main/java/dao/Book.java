@@ -3,7 +3,6 @@ package dao;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "BOOK", schema = "java_books")

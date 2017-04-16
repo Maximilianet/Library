@@ -1,10 +1,15 @@
 package dal;
 
 
+import dao.Author;
 import dao.Book;
+
+import java.util.List;
 
 public interface BookDao {
     void save(Book entity);
 
-    void deleteBook(String name);
+    List<Book> findFirstFifty();
+
+    Book findById(Long bookId);
 }
