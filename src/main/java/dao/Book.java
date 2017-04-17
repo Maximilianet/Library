@@ -14,12 +14,13 @@ public class Book {
     private String reviews;
     private int rating;
     private Author author = null;
+    private String genre;
 
     public Book(){
 
     }
 
-    public Book(long id, String name, int price,  String reviews, int rating, Author author, long authorId) {
+    public Book(long id, String name, int price,  String reviews, int rating, Author author, long authorId, String genre) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -27,6 +28,7 @@ public class Book {
         this.rating = rating;
         this.author = author;
         this.authorId = authorId;
+        this.genre = genre;
     }
 
     @Id
@@ -56,6 +58,15 @@ public class Book {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    @Column(name = "GENRE", nullable = false, unique = false)
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     @Column(name = "REVIEWS", nullable = false, unique = false)
@@ -104,6 +115,7 @@ public class Book {
                 .append("rating",rating)
                 .append("price",price)
                 .append("authorId",authorId)
+                .append("genre", genre)
                 .toString();
     }
 }

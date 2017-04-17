@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
-//    @Autowired
+
+    @Autowired
     private BookDao bookDao;
 
     public void saveNewBook(){ //Написать аргументы

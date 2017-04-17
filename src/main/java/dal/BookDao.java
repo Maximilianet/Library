@@ -9,7 +9,11 @@ import java.util.List;
 public interface BookDao {
     void save(Book entity);
 
-    List<Book> findFirstFifty();
+    List<Book> findBooks();
+
+    List<Book> findBooksByGenre();
 
     Book findById(Long bookId);
+
+    List<Book> findByAuthorId(Long userId);
 }

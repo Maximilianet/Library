@@ -4,6 +4,7 @@ import dal.AuthorDao;
 import dal.BookDao;
 import dao.Author;
 import dao.Book;
+import interfaceData.AuthorPageData;
 import interfaceData.BookPageData;
 import interfaceData.TitlePageData;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,8 +13,8 @@ import java.util.List;
 
 public class SpringHibernateMain {
 
-	private static String sort = "ID";
-	private static int maxNumOfBooks = 5;
+	private static String sortByColumn = "rating";
+	private static int maxNumOfBooks = 6;
 
 	public static void main(String[] args) {
 
@@ -22,27 +23,100 @@ public class SpringHibernateMain {
 		AuthorDao authorDao = context.getBean(AuthorDao.class);
 		BookDao bookDao = context.getBean(BookDao.class);
 
+//		createAuthorsAndBooks(authorDao,bookDao);
+
 		List<TitlePageData> bookPageData = openMainPage(authorDao,bookDao);
-        System.out.println("\n\n" + "1. Open main page");
+        System.out.println("\n\n" + "-- Main page");
         for (TitlePageData t : bookPageData){
-            System.out.println(t.getName() + ", " +t.getAuthorFullName() + ", " + t.getRating() + ", " + t.getPrice());
+            System.out.println(t.getName() + ", " +t.getAuthorFullName() + ", " + t.getGenre()+ ", " + t.getRating() + ", " + t.getPrice());
         }
+
+
+        Long bookId = 2L;
+		BookPageData bookPage = findSingleBook(authorDao,bookDao, bookId);
+		System.out.println("\n\n" + "-- Book page");
+		System.out.println(bookPage.getName() + ", "
+				+ bookPage.getAuthorFullName() + ", "
+				+ bookPage.getGenre()+ ", "
+				+ bookPage.getRating() + ", "
+				+ bookPage.getPrice() + ", "
+				+ bookPage.getReviews()
+		);
+
+
+		String authorFirstName = "Михаил";
+		String authotLastName = "Булгаков";
+		Author authorInfo = findAuthorInfo(authorDao, authorFirstName, authotLastName);
+		System.out.println("\n\n" + "-- Author information");
+		System.out.println(authorInfo);
+
+
+		List<TitlePageData> allAuthorBooks = findAuthorBooks(authorDao, bookDao, authorFirstName, authotLastName);
+		System.out.println("\n\n" + "-- All author books");
+		for (TitlePageData t : allAuthorBooks) {
+			System.out.println(t.toString());
+		}
 
 		context.close();
 	}
 
-    private static List<TitlePageData> openMainPage(AuthorDao authorDao, BookDao bookDao) {
-        List<Book> bookList = bookDao.findFirstFifty();
+	private static List<TitlePageData> findAuthorBooks(AuthorDao authorDao, BookDao bookDao, String firstName, String lastName) {
+		Author author = authorDao.findByFirstNameAndLastName(firstName,lastName);
+
+		Long authorId = author.getId();
+		List<Book> authorBooksList = bookDao.findByAuthorId(authorId);
+
+		List<TitlePageData> authorBooks = mapToTitlePageData(authorBooksList,authorDao);
+
+		return authorBooks;
+	}
+
+	private static Author findAuthorInfo(AuthorDao authorDao, String firstName, String lastName){
+		Author author = authorDao.findByFirstNameAndLastName(firstName, lastName);
+
+		return author;
+	}
+
+	private static BookPageData findSingleBook(AuthorDao authorDao, BookDao bookDao, Long bookId) {
+		Book book = bookDao.findById(bookId);
+
+		BookPageData data = new BookPageData();
+
+		Long authorId = book.getAuthorId();
+		Author author = authorDao.findById(authorId);
+		String authorFullName = author.getFirstName() + " " + author.getLastName();
+		data.setAuthorFullName(authorFullName);
+
+		data.setGenre(book.getGenre());
+		data.setName(book.getName());
+		data.setPrice(book.getPrice());
+		data.setRating(book.getRating());
+		data.setReviews(book.getReviews());
+
+		return data;
+	}
+
+	private static List<TitlePageData> openMainPage(AuthorDao authorDao, BookDao bookDao) {
+        List<Book> bookList = bookDao.findBooks();
 
         List<TitlePageData> titlePageData = mapToTitlePageData(bookList, authorDao);
 
         return titlePageData;
     }
 
+	private static List<TitlePageData> openMainPageByGenre(AuthorDao authorDao, BookDao bookDao) {
+		List<Book> bookList = bookDao.findBooksByGenre();
+
+		List<TitlePageData> titlePageData = mapToTitlePageData(bookList, authorDao);
+
+		return titlePageData;
+	}
+
     private static List<TitlePageData> mapToTitlePageData(List<Book> bookList, AuthorDao authorDao) {
         List<TitlePageData> dataList = new ArrayList<>();
 
         for (Book book : bookList){
+
 			TitlePageData titlePageData= new TitlePageData();
 
             Long authorId = book.getAuthorId();
@@ -50,10 +124,9 @@ public class SpringHibernateMain {
             String authorFullName = author.getFirstName() + " " + author.getLastName();
             titlePageData.setAuthorFullName(authorFullName);
 
+            titlePageData.setGenre(book.getGenre());
             titlePageData.setName(book.getName());
-
             titlePageData.setPrice(book.getPrice());
-
             titlePageData.setRating(book.getRating());
 
             dataList.add(titlePageData);
@@ -62,12 +135,12 @@ public class SpringHibernateMain {
         return dataList;
     }
 
-	public static String getSort() {
-		return sort;
+	public static String getSortByColumn() {
+		return sortByColumn;
 	}
 
-	public static void setSort(String sort) {
-		SpringHibernateMain.sort = sort;
+	public static void setSortByColumn(String sortByColumn) {
+		SpringHibernateMain.sortByColumn = sortByColumn;
 	}
 
 	public static int getMaxNumOfBooks() {
@@ -90,6 +163,7 @@ public class SpringHibernateMain {
 		newBook1.setReviews("...");
 		newBook1.setRating(10);
 		newBook1.setAuthor(newAuthor1);
+		newBook1.setGenre("Роман");
 		bookDao.save(newBook1);
 
 		Author newAuthor2 = new Author();
@@ -103,6 +177,7 @@ public class SpringHibernateMain {
 		newBook2.setReviews("...");
 		newBook2.setRating(10);
 		newBook2.setAuthor(newAuthor2);
+		newBook2.setGenre("Роман");
 		bookDao.save(newBook2);
 
 		Author newAuthor3 = new Author();
@@ -116,6 +191,7 @@ public class SpringHibernateMain {
 		newBook3.setReviews("...");
 		newBook3.setRating(10);
 		newBook3.setAuthor(newAuthor3);
+		newBook3.setGenre("Реализм");
 		bookDao.save(newBook3);
 
 		Author newAuthor4 = new Author();
@@ -129,6 +205,7 @@ public class SpringHibernateMain {
 		newBook4.setReviews("...");
 		newBook4.setRating(8);
 		newBook4.setAuthor(newAuthor4);
+		newBook4.setGenre("Роман");
 		bookDao.save(newBook4);
 
 		Author newAuthor5 = new Author();
@@ -142,6 +219,7 @@ public class SpringHibernateMain {
 		newBook5.setReviews("...");
 		newBook5.setRating(10);
 		newBook5.setAuthor(newAuthor5);
+		newBook5.setGenre("Роман");
 		bookDao.save(newBook5);
 
 		Author newAuthor6 = new Author();
@@ -155,6 +233,7 @@ public class SpringHibernateMain {
 		newBook6.setReviews("...");
 		newBook6.setRating(8);
 		newBook6.setAuthor(newAuthor6);
+		newBook6.setGenre("Роман");
 		bookDao.save(newBook6);
 
 		Author newAuthor7 = new Author();
@@ -168,6 +247,7 @@ public class SpringHibernateMain {
 		newBook7.setReviews("...");
 		newBook7.setRating(7);
 		newBook7.setAuthor(newAuthor7);
+		newBook7.setGenre("Поэма");
 		bookDao.save(newBook7);
 
 		Author newAuthor8 = new Author();
@@ -181,6 +261,7 @@ public class SpringHibernateMain {
 		newBook8.setReviews("...");
 		newBook8.setRating(9);
 		newBook8.setAuthor(newAuthor8);
+		newBook8.setGenre("Повесть");
 		bookDao.save(newBook8);
 	}
 }

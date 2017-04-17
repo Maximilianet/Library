@@ -55,12 +55,12 @@ public class BookDaoImpl implements BookDao {
         return book;
     }
 
-    public List<Book> findFirstFifty(){
+    public List<Book> findBooks(){
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
         String sql = ""
                 + " SELECT * FROM JAVA_BOOKS.BOOK "
-                + " ORDER BY BOOK."+SpringHibernateMain.getSort()+" DESC "
+                + " ORDER BY BOOK."+SpringHibernateMain.getSortByColumn()+" DESC "
                 + " FETCH FIRST "+ SpringHibernateMain.getMaxNumOfBooks() +" ROWS ONLY ";
 
         List<Book> books = jdbc.query(
@@ -69,5 +69,39 @@ public class BookDaoImpl implements BookDao {
         );
 
         return books;
+    }
+
+    public List<Book> findBooksByGenre(){
+        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+        String sql = ""
+                + " SELECT * FROM JAVA_BOOKS.BOOK "
+                + " WHERE genre = 'Роман' "
+                + " ORDER BY BOOK."+SpringHibernateMain.getSortByColumn()+" DESC "
+                + " FETCH FIRST "+ SpringHibernateMain.getMaxNumOfBooks() +" ROWS ONLY ";
+
+        List<Book> books = jdbc.query(
+                sql,
+                new BookRowMapper(Book.class)
+        );
+
+        return books;
+    }
+
+    public List<Book> findByAuthorId(Long authorId) {
+        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+        String sql = ""
+                + " SELECT * FROM java_books.book "
+                + " WHERE BOOK.author_id = " + authorId + " "
+                + " ORDER BY BOOK.rating DESC "
+                + " FETCH FIRST 50 ROWS ONLY ";
+
+        List<Book> authorBooks  = jdbc.query(
+                sql,
+                new BookRowMapper(Book.class)
+        );
+
+        return authorBooks;
     }
 }
