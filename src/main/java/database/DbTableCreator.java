@@ -41,11 +41,11 @@ public class DbTableCreator {
                     + " ) ";
             stmt.executeUpdate(sql);
 
-//            sql = "ALTER TABLE JAVA_BOOKS.BOOK "
-//                    + " ADD CONSTRAINT FK_BOOK "
-//                    + " FOREIGN KEY (AUTHOR_ID) REFERENCES JAVA_BOOKS.AUTHOR (ID) MATCH FULL "
-//                    + " ";
-//            stmt.executeUpdate(sql);
+            sql = "ALTER TABLE JAVA_BOOKS.BOOK "
+                    + " ADD CONSTRAINT FK_BOOK "
+                    + " FOREIGN KEY (AUTHOR_ID) REFERENCES JAVA_BOOKS.AUTHOR (ID) MATCH FULL "
+                    + " ";
+            stmt.executeUpdate(sql);
 
             stmt.close();
             c.close();

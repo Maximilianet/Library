@@ -11,4 +11,6 @@ public interface AuthorDao {
     Author findById(Long authorId);
 
     Author findByFirstNameAndLastName(String firstName, String lastName);
+
+    List<Author> findAll();
 }

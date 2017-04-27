@@ -5,6 +5,7 @@ import dal.mapper.AuthorRowMapper;
 import dal.mapper.BookRowMapper;
 import dao.Author;
 import dao.Book;
+import mainLogic.SpringHibernateMain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -67,5 +68,21 @@ public class AuthorDaoImpl implements AuthorDao{
         );
 
         return author;
+    }
+
+    public List<Author> findAll(){
+        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+        String sql = ""
+                + " SELECT * FROM JAVA_BOOKS.author "
+                + " ORDER BY AUTHOR.ID "
+                + " FETCH FIRST 100 ROWS ONLY ";
+
+        List<Author> authors = jdbc.query(
+                sql,
+                new AuthorRowMapper(Author.class)
+        );
+
+        return authors;
     }
 }
