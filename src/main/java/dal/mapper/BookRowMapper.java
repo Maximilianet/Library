@@ -20,7 +20,7 @@ public class BookRowMapper extends BeanPropertyRowMapper{
         book.setPrice(rs.getInt("PRICE"));
         book.setReviews(rs.getString("REVIEWS"));
         book.setRating(rs.getInt("RATING"));
-        book.setAuthorId(rs.getLong("AUTHOR_ID"));
+        book.setAuthorId(rs.getInt("AUTHOR_ID"));
         book.setGenre(rs.getString("GENRE"));
 
         return book;

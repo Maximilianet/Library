@@ -14,7 +14,32 @@ import java.util.List;
 public class SpringHibernateMain {
 
 	private static String sortByColumn = "rating";
-	private static int maxNumOfBooks = 6;
+	private static int maxNumOfBooks = 100;
+	private static String sortByGenre = "";
+
+	public static String getSortByColumn() {
+		return sortByColumn;
+	}
+
+	public static void setSortByColumn(String sortByColumn) {
+		SpringHibernateMain.sortByColumn = sortByColumn;
+	}
+
+	public static int getMaxNumOfBooks() {
+		return maxNumOfBooks;
+	}
+
+	public static void setMaxNumOfBooks(int maxNumOfBooks) {
+		SpringHibernateMain.maxNumOfBooks = maxNumOfBooks;
+	}
+
+	public static String getSortByGenre() {
+		return sortByGenre;
+	}
+
+	public static void setSortByGenre(String sortByGenre) {
+		SpringHibernateMain.sortByGenre = sortByGenre;
+	}
 
 	public static void main(String[] args) {
 
@@ -82,7 +107,7 @@ public class SpringHibernateMain {
 
 		BookPageData data = new BookPageData();
 
-		Long authorId = book.getAuthorId();
+		int authorId = book.getAuthorId();
 		Author author = authorDao.findById(authorId);
 		String authorFullName = author.getFirstName() + " " + author.getLastName();
 		data.setAuthorFullName(authorFullName);
@@ -119,7 +144,7 @@ public class SpringHibernateMain {
 
 			TitlePageData titlePageData= new TitlePageData();
 
-            Long authorId = book.getAuthorId();
+            int authorId = book.getAuthorId();
             Author author = authorDao.findById(authorId);
             String authorFullName = author.getFirstName() + " " + author.getLastName();
             titlePageData.setAuthorFullName(authorFullName);
@@ -135,21 +160,7 @@ public class SpringHibernateMain {
         return dataList;
     }
 
-	public static String getSortByColumn() {
-		return sortByColumn;
-	}
 
-	public static void setSortByColumn(String sortByColumn) {
-		SpringHibernateMain.sortByColumn = sortByColumn;
-	}
-
-	public static int getMaxNumOfBooks() {
-		return maxNumOfBooks;
-	}
-
-	public static void setMaxNumOfBooks(int maxNumOfBooks) {
-		SpringHibernateMain.maxNumOfBooks = maxNumOfBooks;
-	}
 
 	private static void createAuthorsAndBooks(AuthorDao authorDao, BookDao bookDao) {
 		Author newAuthor1 = new Author();

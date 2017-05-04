@@ -1,9 +1,7 @@
-package service;
+package controller.service;
 
 import dal.AuthorDao;
-import dal.BookDao;
 import dao.Author;
-import dao.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +13,6 @@ public class AuthorService {
     @Autowired
     private  AuthorDao authorDao;
 
-    @Autowired
-    private BookDao bookDao;
-
     public void saveNewAuthor(Author author){
 
     }
@@ -27,8 +22,8 @@ public class AuthorService {
         return list;
     }
 
-    public Book findById(long id) {
-        Book list = bookDao.findById(id);
-        return list;
+    public Author findById(int id){
+        Author author = authorDao.findById(id);
+        return author;
     }
 }

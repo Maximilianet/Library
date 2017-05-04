@@ -60,9 +60,10 @@ public class BookDaoImpl implements BookDao {
 
         String sql = ""
                 + " SELECT * FROM JAVA_BOOKS.BOOK "
-                + " ORDER BY BOOK."+SpringHibernateMain.getSortByColumn()+" DESC "
-                + " FETCH FIRST "+ SpringHibernateMain.getMaxNumOfBooks() +" ROWS ONLY ";
-
+//                + " "+getSortByGenre()+ " "
+                + " ORDER BY BOOK.ID "
+                + " FETCH FIRST 50 ROWS ONLY ";
+        System.out.println(sql);
         List<Book> books = jdbc.query(
                 sql,
                 new BookRowMapper(Book.class)
@@ -77,8 +78,8 @@ public class BookDaoImpl implements BookDao {
         String sql = ""
                 + " SELECT * FROM JAVA_BOOKS.BOOK "
                 + " WHERE genre = 'Роман' "
-                + " ORDER BY BOOK."+SpringHibernateMain.getSortByColumn()+" DESC "
-                + " FETCH FIRST "+ SpringHibernateMain.getMaxNumOfBooks() +" ROWS ONLY ";
+                + " ORDER BY BOOK.ID ASC "
+                + " FETCH FIRST 50 ROWS ONLY ";
 
         List<Book> books = jdbc.query(
                 sql,
@@ -103,5 +104,20 @@ public class BookDaoImpl implements BookDao {
         );
 
         return authorBooks;
+    }
+
+    public Book findByName(String name){
+        JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+
+        String sql ="" +
+                " SELECT * FROM java_books.book " +
+                " WHERE book.name LIKE '% " + name + " %'";
+
+        Book book = (Book) jdbc.query(
+                sql,
+                new BookRowMapper(Book.class)
+        );
+
+        return book;
     }
 }

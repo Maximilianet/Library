@@ -2,10 +2,7 @@ package dal.impl;
 
 import dal.AuthorDao;
 import dal.mapper.AuthorRowMapper;
-import dal.mapper.BookRowMapper;
 import dao.Author;
-import dao.Book;
-import mainLogic.SpringHibernateMain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -37,7 +34,7 @@ public class AuthorDaoImpl implements AuthorDao{
         session.close();
     }
 
-    public Author findById(Long authorId){
+    public Author findById(int authorId){
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         String sql = ""

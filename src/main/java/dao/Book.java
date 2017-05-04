@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "BOOK", schema = "java_books")
 public class Book {
-    private Long authorId;
+    private int authorId;
     private long id;
     private String name;
     private int price;
@@ -20,7 +20,7 @@ public class Book {
 
     }
 
-    public Book(long id, String name, int price,  String reviews, int rating, Author author, long authorId, String genre) {
+    public Book(long id, String name, int price,  String reviews, int rating, Author author, int authorId, String genre) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -98,11 +98,11 @@ public class Book {
     }
 
     @Transient
-    public Long getAuthorId() {
+    public int getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
 

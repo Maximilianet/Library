@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import service.AuthorService;
+import controller.service.AuthorService;
+import controller.service.BookService;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class AuthorController {
 
     @Autowired
     private AuthorService authorService;
+
+    @Autowired
+    private BookService bookService;
 
     @RequestMapping("/")
     public ModelAndView index() {
@@ -35,11 +39,21 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "/authors/{id}", method = RequestMethod.GET)
-    public String showInfo(@PathVariable("id") long id, ModelMap model){
+    public String showInfo(@PathVariable("id") int id, ModelMap model) {
 
-        Book books  = authorService.findById(id);
-        model.addAttribute("myAuthor", books);
+        Book books = bookService.findById(id);
+        model.addAttribute("authorBooks", books);
+
+        Author author = authorService.findById(id);
+        model.addAttribute("authorInfo", author);
 
         return "Authors/showAuthor";
     }
+//    @RequestMapping(value = "/student", method = RequestMethod.POST)
+//    public String addStudent(@ModelAttribute("SpringWeb") Author author, ModelMap modelMap){
+//    modelMap.addAttribute("")
+//
+//    return "result";
+//}
 }
+
