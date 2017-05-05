@@ -106,18 +106,18 @@ public class BookDaoImpl implements BookDao {
         return authorBooks;
     }
 
-    public Book findByName(String name){
+    @Override
+    public List<Book> findByPattern(String bookName) {
         JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
-        String sql ="" +
-                " SELECT * FROM java_books.book " +
-                " WHERE book.name LIKE '% " + name + " %'";
+        String sql = "" +
+                " SELECT * FROM JAVA_BOOKS.BOOK " +
+                " WHERE name LIKE '%" + bookName + "%' " +
+                " ORDER BY BOOK.ID " +
+                " FETCH FIRST 50 ROWS ONLY ";
 
-        Book book = (Book) jdbc.query(
-                sql,
-                new BookRowMapper(Book.class)
-        );
+        List<Book> books = jdbc.query(sql,new BookRowMapper(Book.class));
 
-        return book;
+        return books;
     }
 }

@@ -45,14 +45,14 @@
 <body>
 <div class="container-fluid">
                 <div class="row">
-                    <form class="search">
+                    <form:form modelAttribute="findBook" action="/searchBook" method="post" class="search">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Поиск">
+                            <form:input path="name"  class="form-control" placeholder="Поиск"/>
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit">Найти</button>
                             </div>
                         </div>
-                    </form>
+                    </form:form>
                     <div class="left">
                         <div class="form-group">
                             <label for="sel1">Выбор жанра:</label>
@@ -80,13 +80,13 @@
                         </div>
                     </div>
                     <div class="right">
-            <c:forEach var="books" items="${booksList}">
+            <c:forEach var="books" items="${booksList}" varStatus="i">
                 <div class="col-sm-6 col-md-2 col-lg-3 item">
                     <a href="/book/${books.id}"><p>${books.name}</p>
                     <img src="https://ozon-st.cdn.ngenix.net/multimedia/1005610796.jpg" alt="книга"></a>
                     <p class="price"><b><b>${books.price}</b></b> руб.</p>
-                    <%--<p></p>--%>
-                    <a href="/authors/${books.authorId}">${books.rating}</a>
+                    <a href="/authors/${books.authorId}"><p>${authorInfo.get(i.index).firstName} ${authorInfo.get(i.index).lastName}</p></a>
+                    <p>${books.rating}</p>
                 </div>
             </c:forEach>
         </div>

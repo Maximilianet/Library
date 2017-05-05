@@ -16,4 +16,6 @@ public interface BookDao {
     Book findById(Long bookId);
 
     List<Book> findByAuthorId(Long userId);
+
+    List<Book> findByPattern(String bookName);
 }

@@ -32,12 +32,18 @@ public class BookController {
         List<Book> bookMainPage = bookService.findBooks();
         model.addAttribute("authorInfo", author);
         model.addAttribute("booksList", bookMainPage);
+        model.addAttribute("findBook", new Book());
         return "main";
     }
 
     @RequestMapping(value = "/searchBook", method = RequestMethod.POST)
-    public String searchBook(@ModelAttribute("findBook") Book findBook){
+    public String searchBook(@ModelAttribute("findBook") Book findBook, ModelMap map){
+        List<Author> authors = authorService.findAll();
         String bookName = findBook.getName();
+
+        List<Book> bookList = bookService.findBySearch(bookName);
+        map.addAttribute("booksList", bookList);
+        map.addAttribute("authorInfo", authors);
 
         return "main";
     }

@@ -28,4 +28,9 @@ public class BookService {
         Book book = (Book) bookDao.findBooks();
         return book;
     }
+
+    public List<Book> findBySearch(String bookName) {
+        return bookDao.findByPattern(bookName);
+    }
+
 }
