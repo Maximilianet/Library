@@ -63,7 +63,7 @@ public class BookDaoImpl implements BookDao {
 //                + " "+getSortByGenre()+ " "
                 + " ORDER BY BOOK.ID "
                 + " FETCH FIRST 50 ROWS ONLY ";
-        System.out.println(sql);
+
         List<Book> books = jdbc.query(
                 sql,
                 new BookRowMapper(Book.class)

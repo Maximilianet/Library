@@ -86,7 +86,6 @@
                     <img src="https://ozon-st.cdn.ngenix.net/multimedia/1005610796.jpg" alt="книга"></a>
                     <p class="price"><b><b>${books.price}</b></b> руб.</p>
                     <a href="/authors/${books.authorId}"><p>${authorInfo.get(i.index).firstName} ${authorInfo.get(i.index).lastName}</p></a>
-                    <p>${books.rating}</p>
                 </div>
             </c:forEach>
         </div>

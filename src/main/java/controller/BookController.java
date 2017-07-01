@@ -15,6 +15,8 @@ import controller.service.BookService;
 import controller.service.AuthorService;
 import java.util.List;
 
+import static org.hibernate.jpa.internal.QueryImpl.LOG;
+
 @Controller
 public class BookController {
 
@@ -38,6 +40,8 @@ public class BookController {
 
     @RequestMapping(value = "/searchBook", method = RequestMethod.POST)
     public String searchBook(@ModelAttribute("findBook") Book findBook, ModelMap map){
+
+
         List<Author> authors = authorService.findAll();
         String bookName = findBook.getName();
 
